@@ -17,7 +17,7 @@ const getOpts = ({ label: _label, opts: _opts }: ButtonGroupInternalOpts) => {
     if (opts.label !== undefined) {
       label = _opts.label as any
     }
-    opts = _opts.opts
+    opts = _opts.opts as ButtonGroupOpts
   }
 
   return { label, opts: opts as ButtonGroupOpts }
@@ -30,11 +30,18 @@ export function ButtonGroup(props: ButtonGroupInternalOpts) {
     <Row input={!!label}>
       {label && <Label>{label}</Label>}
       <StyledButtonGroup>
-        {Object.entries(opts).map(([label, onClick]) => (
-          <StyledButtonGroupButton key={label} onClick={() => onClick(store.get)}>
-            {label}
-          </StyledButtonGroupButton>
-        ))}
+        {Object.entries(opts).map(([label, onClick]) => {
+          let displayLabel = label
+          let fn = onClick
+          if (Array.isArray(onClick)) {
+            ;[fn, { label: displayLabel = label }] = onClick
+          }
+          return (
+            <StyledButtonGroupButton key={label} onClick={() => fn(store.get)}>
+              {displayLabel}
+            </StyledButtonGroupButton>
+          )
+        })}
       </StyledButtonGroup>
     </Row>
   )

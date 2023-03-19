@@ -44,17 +44,18 @@ export enum LevaInputs {
   VECTOR2D = 'VECTOR2D',
 }
 
-export type ButtonSettings = { disabled?: boolean }
+export type ButtonSettings = { disabled?: boolean; label?: string | JSX.Element | null }
 
 export type ButtonInput = {
   type: SpecialInputs.BUTTON
+  label?: string | JSX.Element | null
   onClick: (get: (path: string) => any) => void
   settings: ButtonSettings
 }
 
-export type ButtonGroupOpts = {
-  [title: string]: (get: (path: string) => any) => void
-}
+export type ButtonGroupOpts =
+  | { [title: string]: (get: (path: string) => any) => void }
+  | { [title: string]: [(get: (path: string) => any) => void, { label?: string | JSX.Element | null }] }
 
 export type ButtonGroupInputOpts =
   | ButtonGroupOpts

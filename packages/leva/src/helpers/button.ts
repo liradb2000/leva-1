@@ -9,5 +9,6 @@ const defaultSettings = { disabled: false }
  * @param onClick function that executes when the button is clicked
  */
 export function button(onClick: ButtonInput['onClick'], settings?: ButtonSettings): ButtonInput {
-  return { type: SpecialInputs.BUTTON, onClick, settings: { ...defaultSettings, ...settings } }
+  const { label, ..._settings } = settings as ButtonSettings
+  return { type: SpecialInputs.BUTTON, onClick, label, settings: { ...defaultSettings, ..._settings } }
 }
